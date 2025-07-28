@@ -1,0 +1,20 @@
+# Carpetas del entorno virtual
+venv_scan_ia/
+.venv/ # Por si usas otro nombre para el venv
+
+# Archivos de caché de Python
+__pycache__/
+*.pyc
+
+# Archivos temporales o logs que la app pueda generar
+*.log
+*.tmp
+*.zip # Si generas zips temporales
+
+# Resultados del PDF generados (generalmente no se versionan)
+ScanIA_Informe_Vulnerabilidades_*.pdf
+
+# Archivos específicos del sistema operativo o IDE
+.DS_Store # macOS (si alguna vez trabajas desde un Mac)
+.vscode/ # Configuración de VS Code
+.idea/ # Configuración de PyCharm/IntelliJ

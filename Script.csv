@@ -1,0 +1,92 @@
+import csv
+import random
+
+# IPs simuladas
+ips = [f"192.168.{a}.{b}" for a in range(0, 10) for b in range(1, 255)]
+
+# Puertos ampliados (incluye puertos comunes + CCTV)
+ports = [
+    21, 22, 23, 25, 53, 80, 110, 111, 123, 135, 137, 139, 143, 161, 389,
+    443, 445, 554, 631, 8000, 8008, 8080, 8443, 8888, 9000, 9100, 3306,
+    3389, 5432, 6379, 7070, 8181
+]
+
+# Servicios y versiones simuladas
+services = {
+    21: ("ftp", "vsftpd 2.3.4"),
+    22: ("ssh", "OpenSSH 7.2p2"),
+    23: ("telnet", "Linux Telnetd"),
+    25: ("smtp", "Postfix 2.6.6"),
+    53: ("dns", "BIND 9.8.1"),
+    80: ("http", "Apache 2.4.29"),
+    110: ("pop3", "Dovecot 2.2.22"),
+    111: ("rpc", "Portmapper 2.1"),
+    123: ("ntp", "ntpd 4.2.8p10"),
+    135: ("msrpc", "Microsoft RPC"),
+    137: ("netbios-ns", "NetBIOS Name Service"),
+    139: ("smb", "Samba 3.6.25"),
+    143: ("imap", "Cyrus IMAP 3.0"),
+    161: ("snmp", "Net-SNMP 5.7.2"),
+    389: ("ldap", "OpenLDAP 2.4.44"),
+    443: ("https", "OpenSSL 1.0.1"),
+    445: ("microsoft-ds", "Windows SMB"),
+    554: ("rtsp", "RealServer Streaming"),
+    631: ("ipp", "CUPS 2.2"),
+    8000: ("webcam", "Dahua DVR Webserver"),
+    8008: ("http-alt", "Alhua Embedded Web"),
+    8080: ("proxy-http", "Squid/3.5.23"),
+    8443: ("https-alt", "Tomcat 9.0"),
+    8888: ("alternate-http", "Zoneminder UI"),
+    9000: ("zoneminder", "ZoneMinder 1.32"),
+    9100: ("printer", "HP JetDirect"),
+    3306: ("mysql", "MySQL 5.5"),
+    3389: ("rdp", "Windows RDP"),
+    5432: ("postgresql", "PostgreSQL 9.6"),
+    6379: ("redis", "Redis 3.2.12"),
+    7070: ("realserver", "RealPlayer Server"),
+    8181: ("webadmin", "Admin Console UI")
+}
+
+# Niveles de severidad
+severities = ["Critical", "High", "Medium", "Low", "Info"]
+
+# Descripciones según severidad
+descriptions = {
+    "Critical": "Ejecución remota de código detectada.",
+    "High": "Servicio sin parches o configuración insegura.",
+    "Medium": "Cifrado débil o información expuesta.",
+    "Low": "Configuración por defecto o sin autenticación.",
+    "Info": "Servicio activo sin vulnerabilidad crítica."
+}
+
+# Soluciones propuestas
+solutions = {
+    "Critical": "Aplicar parches de seguridad inmediatamente.",
+    "High": "Actualizar el servicio o aplicar firewall.",
+    "Medium": "Revisar configuración y actualizar certificados.",
+    "Low": "Aplicar buenas prácticas de seguridad.",
+    "Info": "Monitorear periódicamente el servicio."
+}
+
+# Crear archivo CSV
+with open('/mnt/data/your_vulnerability_data.csv', 'w', newline='') as csvfile:
+    writer = csv.writer(csvfile)
+    writer.writerow([
+        "ip_address", "port_number", "service_name", "product_version",
+        "vulners_output", "vulnerability_context_description",
+        "manual_severity", "proposed_treatment_solution"
+    ])
+
+    for _ in range(30000):
+        ip = random.choice(ips)
+        port = random.choice(ports)
+        service, version = services.get(port, ("unknown", "N/A"))
+        severity = random.choice(severities)
+        vulners_output = f"Simulated CVE for {service} ({severity})"
+        context = f"Servicio {service.upper()} en puerto {port} presenta: {descriptions[severity]}"
+        treatment = solutions[severity]
+
+        writer.writerow([
+            ip, port, service, version,
+            vulners_output, context, severity, treatment
+        ])
