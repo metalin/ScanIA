@@ -1,29 +1,22 @@
 #:import Graph kivy.garden.graph.Graph
 #:import MeshLinePlot kivy.garden.graph.MeshLinePlot
 #:import dp kivy.metrics.dp
-# Importar el widget Image
 #:import Image kivy.uix.image.Image
+#:import RoundedRectangle kivy.graphics.RoundedRectangle
+#:import Line kivy.graphics.Line
 
-#:set UNIR_BLUE (0/255, 105/255, 170/255, 1)
-#:set UNIR_DARK_BLUE (0/255, 85/255, 142/255, 1)
-#:set UNIR_WHITE (1, 1, 1, 1)
-#:set UNIR_LIGHT_GREY (242/255, 242/255, 242/255, 1)
-#:set UNIR_TEXT_DARK (0.1, 0.1, 0.1, 1)
-#:set UNIR_TEXT_ON_BLUE (1, 1, 1, 1)
-
-<HostDataGroup>:
-    canvas.before:
-        Color:
-            rgba: (0.85, 0.85, 0.85, 1)
-        Line:
-            rectangle: self.x + dp(1), self.y + dp(1), self.width - dp(2), self.height - dp(2)
-            width: 1
+#:set COLOR_PRIMARY (0/255, 105/255, 170/255, 1)
+#:set COLOR_DARK (0/255, 85/255, 142/255, 1)
+#:set COLOR_WHITE (1, 1, 1, 1)
+#:set COLOR_BG_LIGHT (245/255, 248/255, 252/255, 1)
+#:set COLOR_TEXT_DARK (0.1, 0.1, 0.1, 1)
+#:set COLOR_TEXT_LIGHT (1, 1, 1, 1)
+#:set COLOR_GREY (0.8, 0.8, 0.8, 1)
 
 <DashboardScreen>:
-    # El fondo de pantalla de la ventana principal es BLANCO.
     canvas.before:
         Color:
-            rgba: UNIR_WHITE
+            rgba: COLOR_BG_LIGHT
         Rectangle:
             pos: self.pos
             size: self.size
@@ -32,457 +25,402 @@
         orientation: 'vertical'
         spacing: 0
 
-        # Barra de herramientas superior (header_bar)
+        # 1. Barra de Herramientas Superior
         BoxLayout:
-            id: header_bar
             size_hint_y: None
-            height: dp(70)
-            padding: [dp(10), dp(5), dp(10), dp(5)]
-            spacing: dp(10)
+            height: dp(65)
+            padding: [dp(15), dp(5)]
+            spacing: dp(15)
             canvas.before:
                 Color:
-                    rgba: UNIR_BLUE # Fondo azul sólido para la barra superior
+                    rgba: COLOR_PRIMARY
                 Rectangle:
                     pos: self.pos
                     size: self.size
-
-            # Contenedor para el título "ScanIA" 
-            BoxLayout:
+            Label:
+                text: 'ScanIA'
+                font_size: '30sp'
+                bold: True
+                color: COLOR_TEXT_LIGHT
                 size_hint_x: 0.7
-                spacing: dp(10)
-
-                Label:
-                    text: 'ScanIA'
-                    font_size: '32sp'
-                    bold: True
-                    color: UNIR_TEXT_ON_BLUE
-                    halign: 'center' # Centrado horizontalmente
-                    valign: 'middle'
-                    text_size: self.size
-                    size_hint_x: 1
-
-            BoxLayout: # Espacio para los botones de la derecha
+                halign: 'left'
+                valign: 'middle'
+                text_size: self.size
+            
+            BoxLayout:
                 size_hint_x: 0.3
-                spacing: dp(5)
-                padding: [0, dp(5), 0, dp(5)]
+                spacing: dp(8)
+                padding: [0, dp(10)]
                 Button:
                     text: 'Exportar'
                     on_press: root.export_results_to_pdf()
                     background_normal: ''
-                    background_color: UNIR_DARK_BLUE
-                    color: UNIR_TEXT_ON_BLUE
-                    font_size: '12sp'
+                    background_color: COLOR_DARK
+                    color: COLOR_TEXT_LIGHT
+                    font_size: '13sp'
                     bold: True
                 Button:
                     text: 'Ayuda'
-                    on_press: print("Ayuda!") # Placeholder para la funcionalidad de ayuda
                     background_normal: ''
-                    background_color: UNIR_DARK_BLUE
-                    color: UNIR_TEXT_ON_BLUE
-                    font_size: '12sp'
+                    background_color: COLOR_DARK
+                    color: COLOR_TEXT_LIGHT
+                    font_size: '13sp'
                     bold: True
 
-        BoxLayout: # Área principal de contenido (panel izquierdo y derecho)
+        # 2. Área Principal de Contenido
+        BoxLayout:
             orientation: 'horizontal'
-            spacing: dp(5)
-            padding: [dp(5), dp(5), dp(5), dp(5)]
+            spacing: dp(8)
+            padding: dp(8)
 
-            ScrollView: # Panel Izquierdo (Configuración de Escaneo)
-                size_hint_x: 0.35
+            # Panel Izquierdo (Configuración)
+            ScrollView:
+                size_hint_x: 0.4
                 bar_width: dp(8)
                 do_scroll_x: False
-                canvas.before:
-                    Color:
-                        rgba: UNIR_LIGHT_GREY + (0.8,) # Fondo gris claro con 80% de opacidad
-                    Rectangle:
-                        pos: self.pos
-                        size: self.size
-                BoxLayout:
-                    orientation: 'vertical'
+                GridLayout:
+                    cols: 1
                     size_hint_y: None
                     height: self.minimum_height
-                    spacing: dp(8)
-                    padding: dp(10)
+                    spacing: dp(10)
+                    padding: dp(12)
+                    
                     Label:
                         text: 'CONFIGURACIÓN DE ESCANEO'
-                        font_size: '16sp'
+                        font_size: '18sp'
                         bold: True
                         size_hint_y: None
-                        height: dp(30)
-                        color: UNIR_TEXT_DARK
+                        height: dp(35)
+                        color: COLOR_TEXT_DARK
+                        halign: 'left'
+                        text_size: self.width, None
 
+                    # Rango de IP
                     Label:
                         text: 'Rango de IP:'
                         size_hint_y: None
                         height: dp(20)
-                        color: UNIR_TEXT_DARK
+                        color: COLOR_TEXT_DARK
                         halign: 'left'
                         text_size: self.width, None
-
-                    # Campos de IP separados por octetos - IP Inicial
                     BoxLayout:
-                        orientation: 'horizontal'
-                        spacing: dp(2)
                         size_hint_y: None
-                        height: dp(30)
+                        height: dp(35)
+                        spacing: dp(3)
                         TextInput:
                             id: ip_inicial_octet1
+                            on_text: root._validate_octet_input("ip_inicial_octet1", self); root._handle_octet_input("ip_inicial_octet1", self, self.text)
                             input_filter: 'int'
                             multiline: False
-                            size_hint_x: None # No estirar
-                            width: dp(50) # Ancho fijo para 3 dígitos
                             halign: 'center'
-                            input_type: 'number'
-                            write_tab: False # Disable tab for navigation between octets
-                            max_length: 3 # Limit to 3 characters
-                            on_text: root._validate_octet_input('ip_inicial_octet1', self); root._handle_octet_input('ip_inicial_octet1', self, self.text)
-                            on_text_validate: self.focus_next() # Move focus on Enter
+                            max_length: 3
                         Label:
                             text: '.'
                             size_hint_x: None
                             width: dp(10)
-                            color: UNIR_TEXT_DARK
+                            color: COLOR_TEXT_DARK
                         TextInput:
                             id: ip_inicial_octet2
+                            on_text: root._validate_octet_input("ip_inicial_octet2", self); root._handle_octet_input("ip_inicial_octet2", self, self.text)
                             input_filter: 'int'
                             multiline: False
-                            size_hint_x: None
-                            width: dp(50) # Ancho fijo para 3 dígitos
                             halign: 'center'
-                            input_type: 'number'
-                            write_tab: False
-                            max_length: 3 # Limit to 3 characters
-                            on_text: root._validate_octet_input('ip_inicial_octet2', self); root._handle_octet_input('ip_inicial_octet2', self, self.text)
-                            on_text_validate: self.focus_next()
+                            max_length: 3
                         Label:
                             text: '.'
                             size_hint_x: None
                             width: dp(10)
-                            color: UNIR_TEXT_DARK
+                            color: COLOR_TEXT_DARK
                         TextInput:
                             id: ip_inicial_octet3
+                            on_text: root._validate_octet_input("ip_inicial_octet3", self); root._handle_octet_input("ip_inicial_octet3", self, self.text)
                             input_filter: 'int'
                             multiline: False
-                            size_hint_x: None
-                            width: dp(50) # Ancho fijo para 3 dígitos
                             halign: 'center'
-                            input_type: 'number'
-                            write_tab: False
-                            max_length: 3 # Limit to 3 characters
-                            on_text: root._validate_octet_input('ip_inicial_octet3', self); root._handle_octet_input('ip_inicial_octet3', self, self.text)
-                            on_text_validate: self.focus_next()
+                            max_length: 3
                         Label:
                             text: '.'
                             size_hint_x: None
                             width: dp(10)
-                            color: UNIR_TEXT_DARK
+                            color: COLOR_TEXT_DARK
                         TextInput:
                             id: ip_inicial_octet4
+                            on_text: root._validate_octet_input("ip_inicial_octet4", self); root._handle_octet_input("ip_inicial_octet4", self, self.text)
                             input_filter: 'int'
                             multiline: False
-                            size_hint_x: None
-                            width: dp(50) # Ancho fijo para 3 dígitos
                             halign: 'center'
-                            input_type: 'number'
-                            write_tab: False
-                            max_length: 3 # Limit to 3 characters
-                            on_text: root._validate_octet_input('ip_inicial_octet4', self); root._handle_octet_input('ip_inicial_octet4', self, self.text)
-                            on_text_validate: self.focus_next()
-
+                            max_length: 3
                     Label:
                         text: 'hasta'
                         size_hint_y: None
                         height: dp(20)
-                        color: UNIR_TEXT_DARK
+                        color: COLOR_TEXT_DARK
                         halign: 'left'
                         text_size: self.width, None
-
-                    # Campos de IP separados por octetos - IP Final
                     BoxLayout:
-                        orientation: 'horizontal'
-                        spacing: dp(2)
                         size_hint_y: None
-                        height: dp(30)
+                        height: dp(35)
+                        spacing: dp(3)
                         TextInput:
                             id: ip_final_octet1
+                            on_text: root._validate_octet_input("ip_final_octet1", self); root._handle_octet_input("ip_final_octet1", self, self.text)
                             input_filter: 'int'
                             multiline: False
-                            size_hint_x: None
-                            width: dp(50) # Ancho fijo para 3 dígitos
                             halign: 'center'
-                            input_type: 'number'
-                            write_tab: False
-                            max_length: 3 # Limit to 3 characters
-                            on_text: root._validate_octet_input('ip_final_octet1', self); root._handle_octet_input('ip_final_octet1', self, self.text)
-                            on_text_validate: self.focus_next()
+                            max_length: 3
                         Label:
                             text: '.'
                             size_hint_x: None
                             width: dp(10)
-                            color: UNIR_TEXT_DARK
+                            color: COLOR_TEXT_DARK
                         TextInput:
                             id: ip_final_octet2
+                            on_text: root._validate_octet_input("ip_final_octet2", self); root._handle_octet_input("ip_final_octet2", self, self.text)
                             input_filter: 'int'
                             multiline: False
-                            size_hint_x: None
-                            width: dp(50) # Ancho fijo para 3 dígitos
                             halign: 'center'
-                            input_type: 'number'
-                            write_tab: False
-                            max_length: 3 # Limit to 3 characters
-                            on_text: root._validate_octet_input('ip_final_octet2', self); root._handle_octet_input('ip_final_octet2', self, self.text)
-                            on_text_validate: self.focus_next()
+                            max_length: 3
                         Label:
                             text: '.'
                             size_hint_x: None
                             width: dp(10)
-                            color: UNIR_TEXT_DARK
+                            color: COLOR_TEXT_DARK
                         TextInput:
                             id: ip_final_octet3
+                            on_text: root._validate_octet_input("ip_final_octet3", self); root._handle_octet_input("ip_final_octet3", self, self.text)
                             input_filter: 'int'
                             multiline: False
-                            size_hint_x: None
-                            width: dp(50) # Ancho fijo para 3 dígitos
                             halign: 'center'
-                            input_type: 'number'
-                            write_tab: False
-                            max_length: 3 # Limit to 3 characters
-                            on_text: root._validate_octet_input('ip_final_octet3', self); root._handle_octet_input('ip_final_octet3', self, self.text)
-                            on_text_validate: self.focus_next()
+                            max_length: 3
                         Label:
                             text: '.'
                             size_hint_x: None
                             width: dp(10)
-                            color: UNIR_TEXT_DARK
+                            color: COLOR_TEXT_DARK
                         TextInput:
                             id: ip_final_octet4
+                            on_text: root._validate_octet_input("ip_final_octet4", self); root._handle_octet_input("ip_final_octet4", self, self.text)
+                            on_text_validate: root.validar_y_analizar()
                             input_filter: 'int'
                             multiline: False
-                            size_hint_x: None
-                            width: dp(50) # Ancho fijo para 3 dígitos
                             halign: 'center'
-                            input_type: 'number'
-                            write_tab: False
-                            max_length: 3 # Limit to 3 characters
-                            on_text: root._validate_octet_input('ip_final_octet4', self); root._handle_octet_input('ip_final_octet4', self, self.text) # Keep original validation
-                            on_text_validate: root.validar_y_analizar() # Trigger scan or validation on last octet enter
+                            max_length: 3
 
+                    # Opciones de Escaneo
                     Label:
                         text: 'Opciones de Escaneo:'
                         size_hint_y: None
                         height: dp(25)
-                        color: UNIR_TEXT_DARK
+                        color: COLOR_TEXT_DARK
                         bold: True
                         halign: 'left'
                         text_size: self.width, None
-
+                    
                     GridLayout:
-                        cols: 2
+                        cols: 1
                         size_hint_y: None
                         height: self.minimum_height
-                        spacing: dp(5)
-                        padding: [0, dp(5)]
+                        spacing: dp(10)
+                        
+                        BoxLayout:
+                            size_hint_y: None
+                            height: dp(24)
+                            CheckBox:
+                                id: nmap_opt_sS
+                                active: False
+                                size_hint_x: None
+                                width: dp(40)
+                            Label:
+                                text: 'Escaneo SYN (-sS)'
+                                color: COLOR_TEXT_DARK
+                                halign: 'left'
+                                valign: 'middle'
+                                text_size: self.width, None
+                        
+                        BoxLayout:
+                            size_hint_y: None
+                            height: dp(24)
+                            CheckBox:
+                                id: nmap_opt_sT
+                                active: False
+                                size_hint_x: None
+                                width: dp(40)
+                            Label:
+                                text: 'Escaneo TCP Connect (-sT)'
+                                color: COLOR_TEXT_DARK
+                                halign: 'left'
+                                valign: 'middle'
+                                text_size: self.width, None
+                        
+                        BoxLayout:
+                            size_hint_y: None
+                            height: dp(24)
+                            CheckBox:
+                                id: nmap_opt_sU
+                                active: False
+                                size_hint_x: None
+                                width: dp(40)
+                            Label:
+                                text: 'Escaneo UDP (-sU)'
+                                color: COLOR_TEXT_DARK
+                                halign: 'left'
+                                valign: 'middle'
+                                text_size: self.width, None
+                        
+                        BoxLayout:
+                            size_hint_y: None
+                            height: dp(24)
+                            CheckBox:
+                                id: nmap_opt_O
+                                active: False
+                                size_hint_x: None
+                                width: dp(40)
+                            Label:
+                                text: 'Detección de S.O. (-O)'
+                                color: COLOR_TEXT_DARK
+                                halign: 'left'
+                                valign: 'middle'
+                                text_size: self.width, None
+                        
+                        BoxLayout:
+                            size_hint_y: None
+                            height: dp(24)
+                            CheckBox:
+                                id: nmap_opt_sV
+                                active: True
+                                size_hint_x: None
+                                width: dp(40)
+                            Label:
+                                text: 'Detección de Versión (-sV)'
+                                color: COLOR_TEXT_DARK
+                                halign: 'left'
+                                valign: 'middle'
+                                text_size: self.width, None
+                        
+                        BoxLayout:
+                            size_hint_y: None
+                            height: dp(24)
+                            CheckBox:
+                                id: nmap_opt_Pn
+                                active: True
+                                size_hint_x: None
+                                width: dp(40)
+                            Label:
+                                text: 'No hacer Ping (-Pn)'
+                                color: COLOR_TEXT_DARK
+                                halign: 'left'
+                                valign: 'middle'
+                                text_size: self.width, None
+                        
+                        BoxLayout:
+                            size_hint_y: None
+                            height: dp(24)
+                            CheckBox:
+                                id: nmap_opt_vulners
+                                active: True
+                                size_hint_x: None
+                                width: dp(40)
+                            Label:
+                                text: 'Análisis Vulners (--script vulners)'
+                                color: COLOR_TEXT_DARK
+                                halign: 'left'
+                                valign: 'middle'
+                                text_size: self.width, None
 
-                        CheckBox:
-                            id: nmap_opt_sS
-                            active: False
-                            size_hint_x: None
-                            width: dp(30)
-                            size_hint_y: None
-                            height: dp(30)
-                        Label:
-                            text: 'Escaneo SYN'
-                            color: UNIR_TEXT_DARK
-                            text_size: self.width, None
-                            halign: 'left'
-                            valign: 'middle'
-                            size_hint_y: None
-                            height: dp(30)
-
-                        CheckBox:
-                            id: nmap_opt_sT
-                            active: False
-                            size_hint_x: None
-                            width: dp(30)
-                            size_hint_y: None
-                            height: dp(30)
-                        Label:
-                            text: 'Escaneo TCP Connect'
-                            color: UNIR_TEXT_DARK
-                            text_size: self.width, None
-                            halign: 'left'
-                            valign: 'middle'
-                            size_hint_y: None
-                            height: dp(30)
-
-                        CheckBox:
-                            id: nmap_opt_sU
-                            active: False
-                            size_hint_x: None
-                            width: dp(30)
-                            size_hint_y: None
-                            height: dp(30)
-                        Label:
-                            text: 'Escaneo UDP'
-                            color: UNIR_TEXT_DARK
-                            text_size: self.width, None
-                            halign: 'left'
-                            valign: 'middle'
-                            size_hint_y: None
-                            height: dp(30)
-
-                        CheckBox:
-                            id: nmap_opt_O
-                            active: False
-                            size_hint_x: None
-                            width: dp(30)
-                            size_hint_y: None
-                            height: dp(30)
-                        Label:
-                            text: 'Detección de Sistema Operativo'
-                            color: UNIR_TEXT_DARK
-                            text_size: self.width, None
-                            halign: 'left'
-                            valign: 'middle'
-                            size_hint_y: None
-                            height: dp(30)
-
-
-                        CheckBox:
-                            id: nmap_opt_sV
-                            active: True
-                            size_hint_x: None
-                            width: dp(30)
-                            size_hint_y: None
-                            height: dp(30)
-                        Label:
-                            text: 'Detección de Versión de Servicio'
-                            color: UNIR_TEXT_DARK
-                            text_size: self.width, None
-                            halign: 'left'
-                            valign: 'middle'
-                            size_hint_y: None
-                            height: dp(30)
-
-                        CheckBox:
-                            id: nmap_opt_Pn
-                            active: False
-                            size_hint_x: None
-                            width: dp(30)
-                            size_hint_y: None
-                            height: dp(30)
-                        Label:
-                            text: 'No realizar Ping (Omitir descubrimiento)'
-                            color: UNIR_TEXT_DARK
-                            text_size: self.width, None
-                            halign: 'left'
-                            valign: 'middle'
-                            size_hint_y: None
-                            height: dp(30)
-
-                        CheckBox:
-                            id: nmap_opt_vulners
-                            active: True
-                            size_hint_x: None
-                            width: dp(30)
-                            size_hint_y: None
-                            height: dp(30)
-                        Label:
-                            text: 'Análisis de Vulnerabilidades (Vulners)'
-                            color: UNIR_TEXT_DARK
-                            text_size: self.width, None
-                            halign: 'left'
-                            valign: 'middle'
-                            size_hint_y: None
-                            height: dp(30)
-
+                    # Argumentos Adicionales
                     Label:
-                        text: 'Argumentos Adicionales (Nmap):'
+                        text: 'Argumentos Adicionales:'
                         size_hint_y: None
                         height: dp(20)
-                        color: UNIR_TEXT_DARK
+                        color: COLOR_TEXT_DARK
                         halign: 'left'
                         text_size: self.width, None
                     TextInput:
                         id: custom_nmap_args_input
                         hint_text: 'Ej: -T4 --top-ports 20'
-                        multiline: False
                         size_hint_y: None
-                        height: dp(30)
-                        background_color: UNIR_WHITE
-                        foreground_color: UNIR_TEXT_DARK
+                        height: dp(35)
 
                     Widget:
-                        size_hint_y: 0.1
+                        size_hint_y: None
+                        height: dp(15)
 
+                    # Botón de Escaneo
                     Button:
                         id: scan_button
-                        # Lógica para que el mismo botón inicie y detenga el escaneo
                         text: "DETENER ESCANEO" if root.scan_active else "INICIAR ESCANEO"
                         size_hint_y: None
                         height: dp(50)
+                        font_size: '16sp'
+                        bold: True
                         background_normal: ''
-                        # Color rojo si el escaneo está activo, azul si no
-                        background_color: (0.8, 0.2, 0.2, 1) if root.scan_active else UNIR_BLUE
-                        color: UNIR_TEXT_ON_BLUE
-                        # Llama a cancelar si está activo, a validar_y_analizar si no
-                        on_press: root.cancel_scan() if root.scan_active else root.validar_y_analizar()
-                        # 'disabled' ya no es necesario aquí, la lógica de 'on_press' lo maneja.
+                        background_color: (0.9, 0.2, 0.2, 1) if root.scan_active else COLOR_PRIMARY
+                        color: COLOR_TEXT_LIGHT
+                        on_press: root.validar_y_analizar()
 
+                    # Etiqueta de Estado
                     Label:
                         id: status_label
                         markup: True
-                        text: 'Ingrese un rango de IP y seleccione las opciones de escaneo.'
+                        text: 'Listo para escanear.'
                         font_size: '14sp'
                         size_hint_y: None
-                        height: dp(60)
+                        height: dp(80)
                         text_size: self.width, None
                         halign: 'center'
                         valign: 'middle'
-                        color: UNIR_TEXT_DARK
+                        color: COLOR_TEXT_DARK
 
-            ScrollView: # Panel Derecho (Results)
-                id: results_scrollview
-                size_hint_x: 0.65
-                bar_width: dp(8)
-                do_scroll_x: False
+            # Panel Derecho (Resultados)
+            RelativeLayout:
+                id: results_panel
+                size_hint_x: 0.6
                 canvas.before:
-                    # Fondo blanco con 80% de opacidad para el ScrollView
                     Color:
-                        rgba: UNIR_WHITE + (0.8,)
+                        id: results_panel_bg_color
+                        rgba: (0, 0, 0, 0) # Empezamos con fondo transparente
                     Rectangle:
                         pos: self.pos
                         size: self.size
-                    # Borde para el área de resultados (ScrollView)
-                    Color:
-                        rgba: UNIR_DARK_BLUE # Color del borde (azul oscuro)
-                    Line:
-                        rectangle: self.x, self.y, self.width, self.height
-                        width: 1.5 # Grosor de la línea
+                
+                Image:
+                    id: results_background
+                    source: 'gui/assets/Fondo.jpg'
+                    size_hint: 0.7, 0.7
+                    pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+                    fit_mode: "contain"
+                    opacity: 1
 
-                BoxLayout:
-                    id: results_container # Este BoxLayout contendrá el contenido real
-                    orientation: 'vertical'
-                    size_hint_y: None
-                    height: self.minimum_height # Ajustar a min_height para permitir el scroll
-                    spacing: dp(10)
-                    padding: dp(10)
-                    # La imagen de fondo `Fondo.jpg` ha sido eliminada de aquí para evitar que cubra la gráfica.
-                    # El fondo blanco y el borde azul ya son proporcionados por el ScrollView.
+                ScrollView:
+                    id: results_scrollview
+                    bar_width: dp(8)
+                    do_scroll_x: False
+                    # El canvas de aquí se vuelve redundante, el padre controla el fondo
+                    BoxLayout:
+                        id: results_container
+                        orientation: 'vertical'
+                        size_hint_y: None
+                        height: self.minimum_height
+                        spacing: dp(10)
+                        padding: dp(10)
 
-        # Bottom Bar for Progress and Status
+        # 3. Barra Inferior de Progreso
         BoxLayout:
-            id: bottom_bar
             size_hint_y: None
-            height: dp(50)
-            padding: [dp(10), dp(5), dp(10), dp(5)]
-            spacing: dp(10)
+            height: dp(90)
+            padding: [dp(15), dp(8)]
+            spacing: dp(15)
             canvas.before:
                 Color:
-                    rgba: UNIR_LIGHT_GREY + (0.95,) # Slightly transparent light grey background
+                    rgba: COLOR_WHITE
                 Rectangle:
                     pos: self.pos
                     size: self.size
+                Color:
+                    rgba: COLOR_GREY
+                Line:
+                    points: self.x, self.top, self.right, self.top
+                    width: 1.2
 
             ProgressBar:
                 id: bottom_scan_progressbar
@@ -490,22 +428,36 @@
                 size_hint_x: 0.3
                 max: 100
 
+            # Contenedor para el texto de estado principal
             BoxLayout:
                 orientation: 'vertical'
-                size_hint_x: 0.7
+                size_hint_x: 0.45
                 Label:
                     id: bottom_status_text
                     text: root.scan_status
-                    font_size: '12sp'
-                    color: UNIR_TEXT_DARK
+                    font_size: '13sp'
+                    color: COLOR_TEXT_DARK
                     halign: 'left'
+                    valign: 'bottom'
                     text_size: self.width, None
-                    valign: 'middle'
                 Label:
                     id: bottom_current_host_label
-                    text: root.current_host
+                    text: ("Escaneando: " + root.current_host) if root.current_host else ""
                     font_size: '11sp'
-                    color: UNIR_TEXT_DARK
+                    color: (0.4, 0.4, 0.4, 1)
                     halign: 'left'
+                    valign: 'top'
                     text_size: self.width, None
+
+            # Contenedor para la etiqueta de estado de la IA, alineado a la derecha
+            BoxLayout:
+                orientation: 'vertical'
+                size_hint_x: 0.25
+                Label:
+                    text: 'IA: ' + root.ia_status
+                    font_size: '12sp'
+                    color: root.ia_status_color
+                    bold: True
+                    halign: 'right'
                     valign: 'middle'
+                    text_size: self.width, None
