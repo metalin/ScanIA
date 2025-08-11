@@ -1,0 +1,43 @@
+# gui/helppopup.kv
+# Define la apariencia de la ventana emergente de ayuda.
+
+#:set COLOR_PRIMARY (0/255, 105/255, 170/255, 1)
+#:set COLOR_TEXT_LIGHT (1, 1, 1, 1)
+
+<HelpPopup>:
+    title: 'Guía de Usuario'
+    size_hint: 0.9, 0.9
+    auto_dismiss: False # El usuario debe presionar "Cerrar"
+
+    BoxLayout:
+        orientation: 'vertical'
+        spacing: dp(10)
+        padding: dp(10)
+        canvas.before:
+            Color:
+                # Se utiliza el color azul primario para el fondo
+                rgba: COLOR_PRIMARY
+            Rectangle:
+                pos: self.pos
+                size: self.size
+
+        # ScrollView para que el texto largo sea navegable.
+        ScrollView:
+            bar_width: dp(8)
+            do_scroll_x: False
+            Label:
+                size_hint_y: None
+                height: self.texture_size[1]
+                text_size: self.width, None
+                padding: dp(10), dp(10)
+                markup: True
+                # Se utiliza texto claro para contraste
+                color: COLOR_TEXT_LIGHT
+                text: root.help_text
+
+        # Botón para cerrar la ventana.
+        Button:
+            text: 'Cerrar'
+            size_hint_y: None
+            height: dp(45)
+            on_press: root.dismiss()

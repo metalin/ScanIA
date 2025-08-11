@@ -1,0 +1,25 @@
+{
+    "solutions": {
+        "Asegurar CCTV: Cambiar credenciales y actualizar firmware.": 0,
+        "Aplicar parches de seguridad inmediatamente.": 1,
+        "Revisar configuraci\u00f3n del servicio.": 2,
+        "Actualizar o restringir acceso por firewall.": 3,
+        "Monitorear el servicio regularmente.": 4,
+        "Aplicar recomendaciones de seguridad b\u00e1sicas.": 5
+    },
+    "severities": {
+        "Info": 0,
+        "Low": 1,
+        "Medium": 2,
+        "High": 3,
+        "Critical": 4
+    },
+    "port_columns": [
+        "port_21",
+        "port_22",
+        "port_23",
+        "port_80",
+        "port_445",
+        "port_554"
+    ]
+}

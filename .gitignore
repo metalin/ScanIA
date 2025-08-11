@@ -1,20 +1,53 @@
-# Carpetas del entorno virtual
+# ==================================
+#  Entornos Virtuales de Python
+# ==================================
+# Nunca se deben subir. Se recrean usando 'pip install -r requirements.txt'.
+# Añadido 'obice-env/' que aparece en tu captura de pantalla.
+venv/
+.venv/
 venv_scan_ia/
-.venv/ # Por si usas otro nombre para el venv
+obice-env/
 
-# Archivos de caché de Python
+# ==================================================
+#  Modelos de Machine Learning y Archivos de Datos
+# ==================================================
+# Generalmente son archivos binarios grandes o contienen datos.
+# Es mejor versionar los scripts que los generan, no los archivos en sí.
+*.pkl
+*.joblib
+*.h5
+*.csv
+
+# ====================
+#  Caché de Python
+# ====================
+# Archivos generados automáticamente por Python que no son necesarios.
 __pycache__/
 *.pyc
+*.pyo
+*.pyd
+*.egg-info/
 
-# Archivos temporales o logs que la app pueda generar
+# ====================
+#  Reportes Generados
+# ====================
+# Los reportes son resultados de la ejecución, no parte del código fuente.
+# Usamos un patrón genérico para cualquier informe en PDF o HTML.
+*.pdf
+*.html
+
+# ======================================================
+#  Archivos de Sistema Operativo y Editores de Código
+# ======================================================
+# Archivos específicos de configuración que no deben ser compartidos.
+.DS_Store
+.vscode/
+.idea/
+
+# =====================
+#  Archivos Temporales
+# =====================
 *.log
 *.tmp
-*.zip # Si generas zips temporales
-
-# Resultados del PDF generados (generalmente no se versionan)
-ScanIA_Informe_Vulnerabilidades_*.pdf
-
-# Archivos específicos del sistema operativo o IDE
-.DS_Store # macOS (si alguna vez trabajas desde un Mac)
-.vscode/ # Configuración de VS Code
-.idea/ # Configuración de PyCharm/IntelliJ
+*.swp
+*.zip
