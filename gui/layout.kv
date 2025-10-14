@@ -1,3 +1,4 @@
+
 #:import dp kivy.metrics.dp
 
 #:set COLOR_PRIMARY (0/255, 105/255, 170/255, 1)
@@ -49,7 +50,7 @@
                 padding: [0, dp(10)]
                 Button:
                     text: 'Exportar'
-                    on_press: root.export_results_to_pdf()
+                    on_press: root.export_results()
                     background_normal: ''
                     background_color: COLOR_DARK
                     color: COLOR_TEXT_LIGHT
@@ -311,7 +312,7 @@
                             height: dp(24)
                             CheckBox:
                                 id: nmap_opt_Pn
-                                active: True
+                                active: False
                                 size_hint_x: None
                                 width: dp(40)
                             Label:
@@ -335,6 +336,23 @@
                                 halign: 'left'
                                 valign: 'middle'
                                 text_size: self.width, None
+                        BoxLayout:
+                            size_hint_y: None
+                            height: dp(24)
+                            CheckBox:
+                                id: nmap_opt_cctv
+                                active: False
+                                size_hint_x: None
+                                width: dp(40)
+                            Label:
+                                text: 'Análisis Complementario de CCTV'
+                                color: COLOR_TEXT_DARK
+                                halign: 'left'
+                                valign: 'middle'
+                                text_size: self.width, None
+
+                        
+
 
                     # Argumentos Adicionales
                     Label:
