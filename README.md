@@ -1,4 +1,4 @@
-# ScanIA - Análisis de Vulnerabilidades con Inteligencia Artificial
+# ScanIA - Herramienta para el análisis de vulnerabilidades en redes locales mediante Inteligencia Artificial.
 
 Este repositorio contiene el código fuente del proyecto de grado "Desarrollo de una herramienta para el análisis de vulnerabilidades en redes locales mediante inteligencia artificial".
 
