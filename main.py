@@ -2,9 +2,9 @@
 
 # 1. Configuración de Kivy (debe ir antes de otros imports de Kivy si es posible)
 from kivy.config import Config
-# Se restablece el tamaño inicial a 1200x800 como en tu archivo original
-Config.set('graphics', 'width', '1200')  # Ancho inicial de la ventana en píxeles
-Config.set('graphics', 'height', '800')   # Altura inicial de la ventana en píxeles
+# Se restablece el tamaño inicial a 1000x700 como en tu archivo original
+Config.set('graphics', 'width', '1000')  # Ancho inicial de la ventana en píxeles
+Config.set('graphics', 'height', '700')   # Altura inicial de la ventana en píxeles
 Config.set('graphics', 'resizable', True) # Permitir que la ventana sea redimensionable
 
 # 2. Imports necesarios de Kivy y de tu proyecto
